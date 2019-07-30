@@ -23,8 +23,41 @@
       </el-row>
     </el-header>
     <el-container>
-      <el-aside width="200px">Aside</el-aside>
-      <el-main>Main</el-main>
+      <el-aside width="200px">
+        <el-menu
+          :router='true'
+          :default-active="handleUrlPath()"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b"
+        >
+          <el-submenu index="1">
+            <!-- 标题 -->
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>用户管理</span>
+            </template>
+            <!-- 选项 -->
+            <el-menu-item index='/users'>用户列表</el-menu-item>
+
+          </el-submenu>
+          <el-submenu index="2">
+            <!-- 标题 -->
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>权限管理</span>
+            </template>
+            <!-- 选项 -->
+            <el-menu-item index='/roles'>角色列表</el-menu-item>
+            <el-menu-item index='/rights'>权限列表</el-menu-item>
+
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+      <el-main>
+        <!-- 留一个出口 -->
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 
@@ -40,6 +73,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        // 删除token
+        localStorage.removeItem('token')
+
         this.$message({
           message: '退出成功',
           type: 'success',
@@ -53,6 +89,19 @@ export default {
           duration: 800
         })
       })
+    },
+
+    // 开
+    handleOpen () {
+      console.log('开')
+    },
+    // 关
+    handleClose () {
+      console.log('关')
+    },
+    // 处理url哈希值的一个方法
+    handleUrlPath () {
+      return this.$route.path
     }
   }
 }
