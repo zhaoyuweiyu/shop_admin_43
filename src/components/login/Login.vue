@@ -38,7 +38,7 @@
 
 <script>
 
-import axios from 'axios'
+// import axios from 'axios'
 export default {
   data () {
     return {
@@ -66,33 +66,55 @@ export default {
   },
   methods: {
     startLogin () {
-      this.$refs.LoginForm.validate((valid) => {
+      this.$refs.LoginForm.validate(async (valid) => {
         if (!valid) {
           return false
         }
-        // console.log('开始登录了')
-        axios.post('http://localhost:8888/api/private/v1/login', this.LoginForm).then(res => {
-          console.log(res)
-          if (res.data.meta.status === 200) {
-            // console.log('登陆成功')
-            // 保存token
-            localStorage.setItem('token', res.data.data.token)
 
-            this.$message({
-              message: '恭喜你,登陆成功',
-              type: 'success',
-              duration: 800
-            })
-            this.$router.push('/home')
-          } else {
-            // console.log('登陆失败')
-            this.$message({
-              message: '登陆失败',
-              type: 'error',
-              duration: 800
-            })
-          }
-        })
+        let res = await this.$axios.post('http://localhost:8888/api/private/v1/login', this.LoginForm)
+
+        if (res.data.meta.status === 200) {
+          // console.log('登陆成功')
+          // 保存token
+          localStorage.setItem('token', res.data.data.token)
+
+          this.$message({
+            message: '恭喜你,登陆成功',
+            type: 'success',
+            duration: 800
+          })
+          this.$router.push('/home')
+        } else {
+          // console.log('登陆失败')
+          this.$message({
+            message: '登陆失败',
+            type: 'error',
+            duration: 800
+          })
+        }
+        // console.log('开始登录了')
+        // this.$axios.post('http://localhost:8888/api/private/v1/login', this.LoginForm).then(res => {
+        //   console.log(res)
+        //   if (res.data.meta.status === 200) {
+        //     // console.log('登陆成功')
+        //     // 保存token
+        //     localStorage.setItem('token', res.data.data.token)
+
+        //     this.$message({
+        //       message: '恭喜你,登陆成功',
+        //       type: 'success',
+        //       duration: 800
+        //     })
+        //     this.$router.push('/home')
+        //   } else {
+        //     // console.log('登陆失败')
+        //     this.$message({
+        //       message: '登陆失败',
+        //       type: 'error',
+        //       duration: 800
+        //     })
+        //   }
+        // })
       })
       // this.$refs[formName].validate((valid) => {
       //   if (valid) {

@@ -66,14 +66,14 @@
 <script>
 export default {
   methods: {
-    logout () {
-      // console.log('点击退出')
-      this.$confirm('此操作将退出账户, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        // 删除token
+    async logout () {
+      try {
+        await this.$confirm('此操作将退出账户, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        console.log('点击了确定')
         localStorage.removeItem('token')
 
         this.$message({
@@ -82,13 +82,37 @@ export default {
           duration: 800
         })
         this.$router.push('./login')
-      }).catch(() => {
+      } catch (error) {
+        console.log('点击了异常')
         this.$message({
           message: '取消退出',
           type: 'info',
           duration: 800
         })
-      })
+      }
+
+      // console.log('点击退出')
+      // this.$confirm('此操作将退出账户, 是否继续?', '提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(() => {
+      //   // 删除token
+      //   localStorage.removeItem('token')
+
+      //   this.$message({
+      //     message: '退出成功',
+      //     type: 'success',
+      //     duration: 800
+      //   })
+      //   this.$router.push('./login')
+      // }).catch(() => {
+      //   this.$message({
+      //     message: '取消退出',
+      //     type: 'info',
+      //     duration: 800
+      //   })
+      // })
     },
 
     // 开
